@@ -8,11 +8,8 @@ st.caption("Made with Python ❤️")
 if "expression" not in st.session_state:
     st.session_state.expression = ""
 
-st.text_input(
-    "Calculator Display",
-    key="expression",
-    placeholder="Enter your calculation"
-)
+st.subheader("Display")
+st.code(st.session_state.expression or "0", language=None)
 
 buttons = [
     ["7", "8", "9", "/"],
@@ -35,11 +32,14 @@ if st.button("= Calculate", use_container_width=True):
     try:
         expression = st.session_state.expression
         allowed = "0123456789+-*/.() "
+
         if not expression or any(c not in allowed for c in expression):
-            raise ValueError("Invalid expression")
+            raise ValueError
+
         result = eval(expression, {"__builtins__": {}}, {})
         st.session_state.expression = str(result)
         st.rerun()
+
     except Exception:
         st.error("Invalid calculation!")
 
